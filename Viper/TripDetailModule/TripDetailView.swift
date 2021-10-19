@@ -28,34 +28,21 @@
 
 import SwiftUI
 
-struct TripListView: View {
+struct TripDetailView: View {
     
-    @ObservedObject var presenter: TripListPresenter
+    @ObservedObject var presenter: TripDetailPresenter
     
     var body: some View {
-        List {
-            ForEach(presenter.trips, id:\.id) { item in
-                self.presenter.linkBuilder(for: item) {
-                    TripListCell(trip: item)
-                        .frame(height: 240)
-                }
-            }
-            .onDelete(perform: presenter.deleteTrip(_:))
-        }
-        .navigationBarTitle("Roadtrips", displayMode: .inline)
-        .navigationBarItems(trailing: presenter.makeAddNewButton())
+        Text("Hello, World!")
     }
 }
 
-struct TripListView_Previews: PreviewProvider {
+struct TripDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        
         let model = DataModel.sample
-        let interactor = TripListInteractor(model: model)
-        let presenter = TripListPresenter(interactor: interactor)
-        
-        NavigationView {
-            TripListView(presenter: presenter)
-        }
+        let trip = model.trips[1]
+        let mapProvider = RealMapDataProvider()
+        let presenter = TripDetailPresenter(interactor: TripDetailInteractor(trip: trip, model: model, mapInfoProvider: mapProvider))
+        TripDetailView(presenter: presenter)
     }
 }
