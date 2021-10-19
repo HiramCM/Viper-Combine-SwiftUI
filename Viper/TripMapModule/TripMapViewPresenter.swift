@@ -26,59 +26,34 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-import Combine
 import MapKit
+import Combine
 
-class TripDetailInteractor {
-    private let trip: Trip
-    private let model: DataModel
-    let mapInfoProvider: MapDataProvider
+class TripMapViewPresenter: ObservableObject {
     
-    @Published var totalDistance: Measurement<UnitLength> = Measurement(value: 0, unit: .meters)
-    @Published var waypoints: [Waypoint] = []
-    @Published var directions: [MKRoute] = []
+    @Published var pins: [MKAnnotation] = []
+    @Published var routes: [MKRoute] = []
     
-    var tripName:String { trip.name }
-    var tripNamePublisher: Published<String>.Publisher { trip.$name }
-    
+    let interactor: TripDetailInteractor
     private var cancellables = Set<AnyCancellable>()
     
-    init(trip: Trip, model: DataModel, mapInfoProvider: MapDataProvider) {
-        self.trip = trip
-        self.mapInfoProvider = mapInfoProvider
-        self.model = model
+    init(interactor: TripDetailInteractor) {
+        self.interactor = interactor
         
-        trip.$waypoints
-            .assign(to: \.waypoints, on: self)
-            .store(in: &cancellables)
-        
-        trip.$waypoints
-            .flatMap {
-                mapInfoProvider.totalDistance(for: $0)
-            }
+        interactor.$waypoints
             .map {
-                Measurement(value: $0, unit: UnitLength.meters)
+                $0.map {
+                    let annotation = MKPointAnnotation()
+                    annotation.coordinate = $0.location
+                    return annotation
+                }
             }
-            .assign(to: \.totalDistance, on: self)
+            .assign(to: \.pins, on: self)
             .store(in: &cancellables)
         
-        trip.$waypoints
-            .setFailureType(to: Error.self)
-            .flatMap {
-                mapInfoProvider.directions(for: $0)
-            }
-            .catch { _ in
-                Empty<[MKRoute], Never>()
-            }
-            .assign(to: \.directions, on: self)
+        interactor.$directions
+            .assign(to: \.routes, on: self)
             .store(in: &cancellables)
     }
     
-    func setTripName(_ name: String) {
-        trip.name = name
-    }
-    
-    func save() {
-        model.save()
-    }
 }
