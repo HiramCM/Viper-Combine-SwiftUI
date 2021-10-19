@@ -31,10 +31,34 @@ import SwiftUI
 import Combine
 
 class TripDetailPresenter: ObservableObject {
+    
+    @Published var tripName: String = "No name"
+    let setTripName: Binding<String>
+    
     private let interactor: TripDetailInteractor
     private var cancellables = Set<AnyCancellable>()
     
     init(interactor: TripDetailInteractor) {
         self.interactor = interactor
+        
+        // 1
+        // Creates a binding to set the trip name. The TextField will use this in the view to be able to read and write from the value.
+        setTripName = Binding<String>(
+            get: {
+                interactor.tripName
+            }, set: { name in
+                interactor.setTripName(name)
+            }
+        )
+        
+        // 2
+        // Assigns the trip name from the interactor’s publisher to the tripName property of the presenter. This keeps the value synchronized.
+        interactor.tripNamePublisher
+            .assign(to: \.tripName, on: self)
+            .store(in: &cancellables)
+    }
+    
+    func save() {
+        interactor.save()
     }
 }
