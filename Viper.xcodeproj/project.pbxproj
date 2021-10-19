@@ -35,6 +35,7 @@
 		5CE8F251271F33A0003DAE63 /* TripListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8F250271F33A0003DAE63 /* TripListRouter.swift */; };
 		5CE8F254271F5E34003DAE63 /* TripMapViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8F253271F5E34003DAE63 /* TripMapViewPresenter.swift */; };
 		5CE8F256271F6605003DAE63 /* TripMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8F255271F6605003DAE63 /* TripMapView.swift */; };
+		5CE8F258271F6AA6003DAE63 /* TripDetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8F257271F6AA6003DAE63 /* TripDetailRouter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +70,7 @@
 		5CE8F250271F33A0003DAE63 /* TripListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripListRouter.swift; sourceTree = "<group>"; };
 		5CE8F253271F5E34003DAE63 /* TripMapViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripMapViewPresenter.swift; sourceTree = "<group>"; };
 		5CE8F255271F6605003DAE63 /* TripMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripMapView.swift; sourceTree = "<group>"; };
+		5CE8F257271F6AA6003DAE63 /* TripDetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripDetailRouter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +188,7 @@
 				5CE8F24A271F2DC4003DAE63 /* TripDetailPresenter.swift */,
 				5CE8F24C271F2E50003DAE63 /* TripDetailInteractor.swift */,
 				5CE8F24E271F31A0003DAE63 /* TripDetailView.swift */,
+				5CE8F257271F6AA6003DAE63 /* TripDetailRouter.swift */,
 			);
 			path = TripDetailModule;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				0A20EFAF240EA73A00A0CA27 /* WaypointViewInteractor.swift in Sources */,
 				0A20EFAD240EA73A00A0CA27 /* WaypointViewPresenter.swift in Sources */,
 				18D775C122AD944300AE281E /* AppDelegate.swift in Sources */,
+				5CE8F258271F6AA6003DAE63 /* TripDetailRouter.swift in Sources */,
 				0A20EFAE240EA73A00A0CA27 /* WaypointView.swift in Sources */,
 				0A83577623D697A300D83533 /* MapView.swift in Sources */,
 				5CE8F24B271F2DC4003DAE63 /* TripDetailPresenter.swift in Sources */,

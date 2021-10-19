@@ -81,4 +81,20 @@ class TripDetailInteractor {
     func save() {
         model.save()
     }
+    
+    func addWaypoint() {
+        trip.addWaypoint()
+    }
+    
+    func moveWaypoint(fromOffsets: IndexSet, toOffset: Int) {
+        trip.waypoints.move(fromOffsets: fromOffsets, toOffset: toOffset)
+    }
+    
+    func deleteWayPoint(atOffsets: IndexSet) {
+        trip.waypoints.remove(atOffsets: atOffsets)
+    }
+    
+    func updateWaypoints() {
+        trip.waypoints = trip.waypoints
+    }
 }

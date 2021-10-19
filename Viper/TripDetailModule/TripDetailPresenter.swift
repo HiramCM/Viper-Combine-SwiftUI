@@ -39,10 +39,12 @@ class TripDetailPresenter: ObservableObject {
     @Published var waypoints: [Waypoint] = []
     
     private let interactor: TripDetailInteractor
+    private let router: TripDetailRouter
     private var cancellables = Set<AnyCancellable>()
     
     init(interactor: TripDetailInteractor) {
         self.interactor = interactor
+        self.router = TripDetailRouter(mapProvide: interactor.mapInfoProvider)
         
         // 1
         // Creates a binding to set the trip name. The TextField will use this in the view to be able to read and write from the value.
@@ -77,5 +79,29 @@ class TripDetailPresenter: ObservableObject {
     
     func save() {
         interactor.save()
+    }
+    
+    func makeMapView() -> some View {
+        TripMapView(presenter: TripMapViewPresenter(interactor: interactor))
+    }
+    
+    func addWaypoint() {
+        interactor.addWaypoint()
+    }
+    
+    func didMoveWaypoint(fromOffsets: IndexSet, toOffset: Int) {
+        interactor.moveWaypoint(fromOffsets: fromOffsets, toOffset: toOffset)
+    }
+    
+    func didDeleteWaypoint(_ atOffsets: IndexSet) {
+        interactor.deleteWayPoint(atOffsets: atOffsets)
+    }
+    
+    func cell(for waypoint:Waypoint) -> some View {
+        let destination = router.makeWaypointview(for: waypoint)
+            .onDisappear(perform: interactor.updateWaypoints)
+        return NavigationLink(destination: destination) {
+            Text(waypoint.name)
+        }
     }
 }

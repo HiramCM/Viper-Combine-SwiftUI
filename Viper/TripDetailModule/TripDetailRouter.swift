@@ -28,43 +28,15 @@
 
 import SwiftUI
 
-struct TripDetailView: View {
+class TripDetailRouter {
+    private let mapProvider: MapDataProvider
     
-    @ObservedObject var presenter: TripDetailPresenter
-    
-    var body: some View {
-        VStack {
-            TextField("Trip Name", text: presenter.setTripName)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding([.horizontal])
-            presenter.makeMapView()
-            Text(presenter.distanceLabel)
-                .padding()
-            HStack {
-                Spacer()
-                EditButton()
-                Button(action: presenter.addWaypoint) {
-                    Text("Add")
-                }
-            }
-            .padding([.horizontal])
-            List {
-                ForEach(presenter.waypoints, content: presenter.cell(for:))
-                    .onMove(perform: presenter.didMoveWaypoint(fromOffsets:toOffset:))
-                    .onDelete(perform: presenter.didDeleteWaypoint(_:))
-            }
-        }
-        .navigationBarTitle(Text(presenter.tripName), displayMode: .inline)
-        .navigationBarItems(trailing: Button("Save", action: presenter.save))
+    init(mapProvide: MapDataProvider) {
+        self.mapProvider = mapProvide
     }
-}
-
-struct TripDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        let model = DataModel.sample
-        let trip = model.trips[1]
-        let mapProvider = RealMapDataProvider()
-        let presenter = TripDetailPresenter(interactor: TripDetailInteractor(trip: trip, model: model, mapInfoProvider: mapProvider))
-        TripDetailView(presenter: presenter)
+    
+    func makeWaypointview(for waypoint: Waypoint) -> some View {
+        let presenter = WaypointViewPresenter(waypoint: waypoint, interactor: WaypointViewInteractor(waypoint: waypoint, mapInfoProvider: mapProvider))
+        return WaypointView(presenter: presenter)
     }
 }
